@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>脖子僵硬预警器</title>
+</head>
+
+<body>
+
+    <action-button-list id="buttonList">
+        <action-button v-for="btn in buttons" :key="btn.id" :name="btn.name"></action-button>
+    </action-button-list>
+
+    <action-ul id="actionList">
+        <action-li v-for="(action, index) in actions" :key="action.id" :name="action.name" :start="action.start" :end="action.end" :index="index"></action-li>
+    </action-ul>
+
+    <div>
+        当“坐”超过 <input type="number" /> 分时，提示 <input type="text" />
+    </div>
+
+    <script src="../js/vue.js"></script>
+    <script src="./app.js"></script>
+</body>
+
+</html>

@@ -65,7 +65,12 @@
         </el-row>
 
         <el-row id="toolbar">
-            <el-button type="warning" onclick="resetActions()" round size="small">重置行动记录列表</el-button>
+            <el-row>
+                <el-button type="warning" onclick="resetActions()" round size="small">重置行动记录列表</el-button>
+            </el-row>
+            <el-row>
+                <el-checkbox v-model="isContinue">想要关闭浏览器时，继续计时，请勾选</el-checkbox>
+            </el-row>
         </el-row>
     </div>
 

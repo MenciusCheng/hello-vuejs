@@ -1,6 +1,12 @@
 
+// 刷新方法计时器
+let refreshId = 0
+
 // 是否进行桌面消息提醒
 let canAlert = true
+
+// 关闭浏览器时是否继续计时
+let isContinue = localStorage.getItem('wei-iscontinue') ? true : false
 
 let weiButtons = localStorage.getItem('wei-buttons')
 // 按钮列表
@@ -9,10 +15,15 @@ let buttons = weiButtons ? JSON.parse(weiButtons) : [{ id: 1, name: '停', type:
 let weiActions = localStorage.getItem('wei-actions')
 // 行动记录列表
 let actions = weiActions ? JSON.parse(weiActions) : []
-actions.unshift({ id: actions.length + 1, name: '停', start: 0, end: 0 })
 
-// 刷新方法计时器
-let refreshId = 0
+if (isContinue) {
+    if (actions[0].name != '停') {
+        // 继续计时器
+        refreshId = setInterval(refresh, 500)
+    }
+} else {
+    actions.unshift({ id: actions.length + 1, name: '停', start: 0, end: 0 })
+}
 
 // ==== 整体布局
 
@@ -152,7 +163,19 @@ let configAlertVm = new Vue({
 })
 
 let toolbarVm = new Vue({
-    el: '#toolbar'
+    el: '#toolbar',
+    data: {
+        isContinue
+    },
+    watch: {
+        isContinue: function (val) {
+            if (val) {
+                localStorage.setItem('wei-iscontinue', true)
+            } else {
+                localStorage.removeItem('wei-iscontinue')
+            }
+        }
+    }
 })
 
 // ==== 定时任务

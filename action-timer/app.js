@@ -182,33 +182,39 @@ function resetActions() {
 // ==== 桌面消息提醒
 
 function notifyMe(text) {
-    // 先检查浏览器是否支持
-    if (!("Notification" in window)) {
-        return
-    }
-    // 检查用户是否同意接受通知
-    else if (Notification.permission === "granted") {
-        // If it's okay let's create a notification
-        var notification = new Notification(text);
-    }
-    // 否则我们需要向用户获取权限
-    else if (Notification.permission !== 'denied') {
-        Notification.requestPermission(function (permission) {
-            // 如果用户同意，就可以向他们发送通知
-            if (permission === "granted") {
-                var notification = new Notification(text);
-            }
-        });
-    }
+    alert(text)
 }
 
-document.addEventListener('DOMContentLoaded', function () {
-    if (!Notification) {
-        alert('您的浏览器不支持消息提醒');
-        return;
-    }
-    if (Notification.permission !== "granted")
-        Notification.requestPermission();
-})
+// 非 https 不允许桌面提醒
+
+// function notifyMe(text) {
+//     // 先检查浏览器是否支持
+//     if (!("Notification" in window)) {
+//         return
+//     }
+//     // 检查用户是否同意接受通知
+//     else if (Notification.permission === "granted") {
+//         // If it's okay let's create a notification
+//         var notification = new Notification(text);
+//     }
+//     // 否则我们需要向用户获取权限
+//     else if (Notification.permission !== 'denied') {
+//         Notification.requestPermission(function (permission) {
+//             // 如果用户同意，就可以向他们发送通知
+//             if (permission === "granted") {
+//                 var notification = new Notification(text);
+//             }
+//         });
+//     }
+// }
+
+// document.addEventListener('DOMContentLoaded', function () {
+//     if (!Notification) {
+//         alert('您的浏览器不支持消息提醒');
+//         return;
+//     }
+//     if (Notification.permission !== "granted")
+//         Notification.requestPermission();
+// })
 
 

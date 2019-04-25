@@ -4,7 +4,7 @@ let canAlert = true
 
 let weiButtons = localStorage.getItem('wei-buttons')
 // 按钮列表
-let buttons = weiButtons ? JSON.parse(weiButtons) : [{ id: 1, name: '停' }, { id: 2, name: '坐' }, { id: 3, name: '走' }]
+let buttons = weiButtons ? JSON.parse(weiButtons) : [{ id: 1, name: '停', type: 'info' }, { id: 2, name: '坐', type: 'primary' }, { id: 3, name: '走', type: 'success' }]
 
 let weiActions = localStorage.getItem('wei-actions')
 // 行动记录列表
@@ -13,6 +13,10 @@ actions.unshift({ id: actions.length + 1, name: '停', start: 0, end: 0 })
 
 // 刷新方法计时器
 let refreshId = 0
+
+// ==== 整体布局
+
+
 
 
 // ==== 按钮列表
@@ -26,7 +30,11 @@ Vue.component('action-button-list', {
 
 Vue.component('action-button', {
     props: {
-        name: String
+        name: String,
+        type: {
+            type: String,
+            default: "primary"
+        }
     },
     methods: {
         onClick: function (event) {
@@ -54,7 +62,7 @@ Vue.component('action-button', {
             refreshId = setInterval(refresh, 500)
         }
     },
-    template: '<button @click="onClick">{{ name }}</button>'
+    template: '<el-button :type="type" @click="onClick">{{ name }}</el-button>'
 })
 
 let buttonVm = new Vue({
@@ -141,6 +149,10 @@ let configAlertVm = new Vue({
             localStorage.setItem('wei-alertText', val)
         }
     }
+})
+
+let toolbarVm = new Vue({
+    el: '#toolbar'
 })
 
 // ==== 定时任务

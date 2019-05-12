@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Hello-Element</title>
+
+  <!-- element-ui -->
+  <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+  <style>
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <el-container>
+      <el-header>
+        <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
+          <el-menu-item index="1">处理中心</el-menu-item>
+          <el-menu-item index="2">消息中心</el-menu-item>
+          <el-menu-item index="3">
+            <el-link href="#" target="_self" :underline="false">订单管理</el-link>
+          </el-menu-item>
+        </el-menu>
+      </el-header>
+      <el-main>
+        <el-row>
+          <el-col :span="8" style="padding: 0 10px;">
+            <div>待解析文本</div>
+            <el-input type="textarea" :rows="16" placeholder="请输入内容">
+            </el-input>
+            <el-select placeholder="请选择">
+              <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+              </el-option>
+            </el-select>
+          </el-col>
+          <el-col :span="8" style="padding: 0 10px;">
+            <div>渲染模板</div>
+            <el-input type="textarea" :rows="16" placeholder="请输入内容">
+            </el-input>
+          </el-col>
+          <el-col :span="8" style="padding: 0 10px;">
+            <el-input type="textarea" :rows="16" placeholder="请输入内容">
+            </el-input>
+          </el-col>
+        </el-row>
+      </el-main>
+    </el-container>
+
+
+
+
+  </div>
+
+  <!-- vue.js -->
+  <script src="../lib/vuejs/vue.min.js"></script>
+  <!-- element-ui -->
+  <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+  <!-- app -->
+  <script src="./app.js"></script>
+</body>
+
+</html>

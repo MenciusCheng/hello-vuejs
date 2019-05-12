@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="components-demo">
+    <button-counter></button-counter>
+    <button-counter></button-counter>
+  </div>
+
+  <div id="blog-post-demo">
+    <div :style="{ fontSize: postFontSize + 'em' }">
+      <blog-post 
+        v-for="post in posts"
+        :key="post.id"
+        :post="post"
+        v-on:enlarge-text="onEnlargeText"
+      ></blog-post>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+  <script src="./app.js"></script>
+</body>
+
+</html>

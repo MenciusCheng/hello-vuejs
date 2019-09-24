@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Draw Card</title>
+</head>
+
+<body>
+  <div id="app">
+    <ul>
+      <li>HP: {{player.hp}}/{{player.hpLimit}}</li>
+      <li>VP: {{player.vp}}/{{player.vpLimit}}</li>
+      <li>SP: {{player.sp}}/{{player.spLimit}}</li>
+    </ul>
+    <div>
+      <button v-on:click="sayHello">hello</button>：
+      <span>{{helloMessage}}</span>
+    </div>
+    <div>
+      <button v-on:click="drawCard">draw card</button>
+      <p>获得卡牌：{{lastCard.type}} {{lastCard.name}} {{lastCard.hp}} {{lastCard.vp}} {{lastCard.sp}}</p>
+    </div>
+    <div>
+      <p>我的卡牌：</p>
+      <ul>
+        <li v-for="item in cards">
+          {{item.type}} {{item.name}} {{item.hp}} {{item.vp}} {{item.sp}} <button v-on:click="useCard(item.id)">use</button>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <script src="../js/vue.js"></script>
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+
+</html>

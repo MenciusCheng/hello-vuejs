@@ -253,13 +253,10 @@ function resetActions() {
 function notifyMe(text) {
     if (toolbarVm.isDesktopNotify) {
         notifyMeForDesktop(text)
+        warning(text)
+    } else {
+        alert(text)
     }
-    toolbarVm.$message({
-        showClose: true,
-        message: text,
-        type: 'warning',
-        duration: 0
-    })
 }
 
 function warning(text) {

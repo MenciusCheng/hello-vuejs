@@ -25,6 +25,9 @@ if (isContinue) {
     actions.unshift({ id: actions.length + 1, name: '停', start: 0, end: 0 })
 }
 
+// 是否桌面提醒
+let isDesktopNotify = localStorage.getItem('wei-isDesktopNotify') ? true : false
+
 // ==== 整体布局
 
 
@@ -165,7 +168,8 @@ let configAlertVm = new Vue({
 let toolbarVm = new Vue({
     el: '#toolbar',
     data: {
-        isContinue
+        isContinue,
+        isDesktopNotify
     },
     watch: {
         isContinue: function (val) {
@@ -173,6 +177,36 @@ let toolbarVm = new Vue({
                 localStorage.setItem('wei-iscontinue', true)
             } else {
                 localStorage.removeItem('wei-iscontinue')
+            }
+        },
+        isDesktopNotify: function (val) {
+            if (val) {
+                canDestopNotify = false
+                if (!isHttps() && !isLocalhost()) {
+                    warning("必须是https才能提醒")
+                } else if (!Notification) {
+                    warning('您的浏览器不支持消息提醒')
+                } else if (Notification.permission == 'denied') {
+                    warning('您已拒绝浏览器的通知，需要手动修改配置')
+                } else if (Notification.permission !== "granted") {
+                    Notification.requestPermission(function (permission) {
+                        // 如果用户同意，就可以向他们发送通知
+                        if (permission !== "granted") {
+                            toolbarVm.isDesktopNotify = false
+                        }
+                    });
+                    canDestopNotify = true
+                } else {
+                    canDestopNotify = true
+                }
+
+                if (canDestopNotify) {
+                    localStorage.setItem('wei-isDesktopNotify', true)
+                } else {
+                    this.isDesktopNotify = false
+                }
+            } else {
+                localStorage.removeItem('wei-isDesktopNotify')
             }
         }
     }
@@ -217,31 +251,46 @@ function resetActions() {
 // ==== 桌面消息提醒
 
 function notifyMe(text) {
-    alert(text)
+    if (toolbarVm.isDesktopNotify) {
+        notifyMeForDesktop(text)
+    }
+    toolbarVm.$message({
+        showClose: true,
+        message: text,
+        type: 'warning',
+        duration: 0
+    })
+}
+
+function warning(text) {
+    toolbarVm.$message({
+        message: text,
+        type: 'warning',
+    })
 }
 
 // 非 https 不允许桌面提醒
 
-// function notifyMe(text) {
-//     // 先检查浏览器是否支持
-//     if (!("Notification" in window)) {
-//         return
-//     }
-//     // 检查用户是否同意接受通知
-//     else if (Notification.permission === "granted") {
-//         // If it's okay let's create a notification
-//         var notification = new Notification(text);
-//     }
-//     // 否则我们需要向用户获取权限
-//     else if (Notification.permission !== 'denied') {
-//         Notification.requestPermission(function (permission) {
-//             // 如果用户同意，就可以向他们发送通知
-//             if (permission === "granted") {
-//                 var notification = new Notification(text);
-//             }
-//         });
-//     }
-// }
+function notifyMeForDesktop(text) {
+    // 先检查浏览器是否支持
+    if (!("Notification" in window)) {
+        return
+    }
+    // 检查用户是否同意接受通知
+    else if (Notification.permission === "granted") {
+        // If it's okay let's create a notification
+        var notification = new Notification(text);
+    }
+    // 否则我们需要向用户获取权限
+    else if (Notification.permission !== 'denied') {
+        Notification.requestPermission(function (permission) {
+            // 如果用户同意，就可以向他们发送通知
+            if (permission === "granted") {
+                var notification = new Notification(text);
+            }
+        });
+    }
+}
 
 // document.addEventListener('DOMContentLoaded', function () {
 //     if (!Notification) {
@@ -252,4 +301,11 @@ function notifyMe(text) {
 //         Notification.requestPermission();
 // })
 
+function isHttps() {
+    return window.location.href.startsWith("https")
+}
+
+function isLocalhost() {
+    return window.location.href.startsWith("http://localhost")
+}
 

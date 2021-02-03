@@ -8,7 +8,8 @@
     <title>脖子僵硬预警器 - 内测版</title>
 
     <!-- 引入样式 -->
-    <link rel="stylesheet" href="./element-index.css">
+    <link rel="stylesheet" href="https://unpkg.com/element-ui@2.15.0/lib/theme-chalk/index.css">
+    <!-- <link rel="stylesheet" href="./element-index.css"> -->
 
     <style>
         .el-row {
@@ -41,6 +42,9 @@
             background-color: #f9fafc;
         }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui@2.15.0/lib/index.js"></script>
 </head>
 
 <body>
@@ -71,12 +75,15 @@
             <el-row>
                 <el-checkbox v-model="isContinue">想要关闭浏览器时，继续计时，请勾选</el-checkbox>
             </el-row>
+            <el-row>
+                <el-checkbox v-model="isDesktopNotify">使用桌面提醒，请勾选</el-checkbox>
+            </el-row>
         </el-row>
     </div>
 
-    <script src="../js/vue.js"></script>
+    <!-- <script src="../js/vue.js"></script> -->
     <!-- 引入组件库 -->
-    <script src="./element-index.js"></script>
+    <!-- <script src="./element-index.js"></script> -->
     <script src="./app.js"></script>
 </body>
 

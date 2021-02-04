@@ -16,13 +16,14 @@ let weiActions = localStorage.getItem('wei-actions')
 // 行动记录列表
 let actions = weiActions ? JSON.parse(weiActions) : []
 
-if (isContinue) {
-    if (actions[0].name != '停') {
+if (actions[0].name != '停') {
+    if (isContinue) {
         // 继续计时器
         refreshId = setInterval(refresh, 500)
+    } else {
+        let t = new Date().getTime()
+        actions.unshift({ id: actions.length + 1, name: '停', start: t, end: t })
     }
-} else {
-    actions.unshift({ id: actions.length + 1, name: '停', start: 0, end: 0 })
 }
 
 // 是否桌面提醒
@@ -31,7 +32,29 @@ let isDesktopNotify = localStorage.getItem('wei-isDesktopNotify') ? true : false
 // ==== 整体布局
 
 
+// ==== 配置提醒
 
+let configAlertVm = new Vue({
+    el: '#configAlert',
+    data: function () {
+        let minute = localStorage.getItem('wei-minute') ? parseFloat(localStorage.getItem('wei-minute')) : 40
+        let alertText = localStorage.getItem('wei-alertText') ? localStorage.getItem('wei-alertText') : '你的脖子僵硬了，起来走走吧！'
+        return { minute, alertText }
+    },
+    computed: {
+        second: function () {
+            return this.minute * 60
+        }
+    },
+    watch: {
+        minute: function (val) {
+            localStorage.setItem('wei-minute', val)
+        },
+        alertText: function (val) {
+            localStorage.setItem('wei-alertText', val)
+        }
+    }
+})
 
 // ==== 按钮列表
 
@@ -109,7 +132,6 @@ Vue.component('action-li', {
                 let s = Math.round((this.end - this.start) / 1000)
                 let minute = Math.floor(s / 60)
                 let second = s % 60
-                // console.log("s: " + s + " minute: " + minute + " second: " + second)
                 return (minute > 0 ? (minute + ' 分 ') : '') + second + ' 秒'
             } else {
                 return ''
@@ -117,6 +139,20 @@ Vue.component('action-li', {
         },
         isCurrent: function () {
             return this.index === 0
+        },
+        calListClass: function () {
+            if (this.name == '坐') {
+                let s = Math.round((this.end - this.start) / 1000)
+                if (s > configAlertVm.second) {
+                    return 'text-danger'
+                } else {
+                    return 'text-warning'
+                }
+            } else if (this.name == '走') {
+                return 'text-success'
+            } else {
+                return 'text-info'
+            }
         }
     },
     methods: {
@@ -127,11 +163,28 @@ Vue.component('action-li', {
             if (this.name == '停') {
                 return '当前无计时'
             } else {
-                return (this.isCurrent ? '> ' : '') + this.name + ': ' + this.duration
+                return (this.showCurrentFlag()) + this.name + ': ' + this.duration
             }
+        },
+        showStartTimeText: function () {
+            return new Date(this.start).toLocaleTimeString()
         }
     },
-    template: '<li>{{ showText() }}</li>'
+    template: '<li v-bind:class="calListClass"><span class="row-time">{{ showStartTimeText() }}</span><span class="row-space"></span><span>{{ showText() }}</span></li>'
+})
+
+Vue.component('action-tail', {
+    props: {
+    },
+    methods: {
+        currentDate: function () {
+            if (actions.length > 0) {
+                return new Date(actions[actions.length - 1].start).toLocaleDateString()
+            }
+            return new Date().toLocaleDateString()
+        }
+    },
+    template: '<div class="text-info row-time">最后一条记录日期：{{ currentDate() }}</div>'
 })
 
 let actionVm = new Vue({
@@ -141,29 +194,7 @@ let actionVm = new Vue({
     }
 })
 
-// ==== 配置提醒
-
-let configAlertVm = new Vue({
-    el: '#configAlert',
-    data: function () {
-        let minute = localStorage.getItem('wei-minute') ? parseFloat(localStorage.getItem('wei-minute')) : 40
-        let alertText = localStorage.getItem('wei-alertText') ? localStorage.getItem('wei-alertText') : '你的脖子僵硬了，起来走走吧！'
-        return { minute, alertText }
-    },
-    computed: {
-        second: function () {
-            return this.minute * 60
-        }
-    },
-    watch: {
-        minute: function (val) {
-            localStorage.setItem('wei-minute', val)
-        },
-        alertText: function (val) {
-            localStorage.setItem('wei-alertText', val)
-        }
-    }
-})
+// ==== 配置选项
 
 let toolbarVm = new Vue({
     el: '#toolbar',

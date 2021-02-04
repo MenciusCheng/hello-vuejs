@@ -41,6 +41,32 @@
             padding: 10px 0;
             background-color: #f9fafc;
         }
+
+        .row-time {
+            font-style: italic;
+            font-size: small;
+        }
+
+        .row-space {
+            width: 10px;
+            display: inline-block;
+        }
+
+        .text-success {
+            color: #67C23A;
+        }
+
+        .text-warning {
+            color: #E6A23C;
+        }
+
+        .text-info {
+            color: #909399;
+        }
+
+        .text-danger {
+            color: #F56C6C;
+        }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
     <!-- 引入组件库 -->
@@ -58,8 +84,9 @@
         </action-button-list>
 
         <action-ul id="actionList">
-            <action-li v-for="(action, index) in actions" :key="action.id" :name="action.name" :start="action.start" :end="action.end"
-                :index="index"></action-li>
+            <action-li v-for="(action, index) in actions" :key="action.id" :name="action.name" :start="action.start"
+                :end="action.end" :index="index"></action-li>
+            <action-tail></action-tail>
         </action-ul>
 
         <el-row id="configAlert">

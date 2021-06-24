@@ -1,5 +1,10 @@
 
 (function () {
+  let todoListText = localStorage.getItem('todoListText')
+  if (!!todoListText) {
+    document.getElementById("todoList").value = todoListText
+  }
+ 
   window.setInterval(function () {
     let t = document.getElementById('startTimestamp').value
     if (!!t) {
@@ -24,4 +29,9 @@ function start() {
 
   let s = t.toTimeString().substring(0, 5)
   document.getElementById('startTime').value = s
+}
+
+function onTodoListChange() {
+  let text = document.getElementById("todoList").value
+  localStorage.setItem('todoListText', text)
 }

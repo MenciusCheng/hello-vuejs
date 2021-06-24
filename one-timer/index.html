@@ -8,23 +8,85 @@
   <title>ONE-TIMER</title>
 
   <style>
-    input {
+    content {
+      display: flex;
+      margin: 50px auto;
+    }
+
+    .timer-all {
+      display: flex;
+      flex-direction: column;
+      margin-left: 100px;
+    }
+
+    .timer-input {
+      display: flex;
+    }
+
+    .timer-button {
+      display: flex;
+    }
+
+    .timer-label {
+      font-size: 35px;
+      color: aliceblue;
+      margin: 0;
+    }
+
+    #startTime {
+      width: 270px;
       font-size: 70px;
+    }
+
+    #duration {
+      width: 150px;
+      font-size: 70px;
+    }
+
+    #startButton {
+      font-size: 70px;
+    }
+
+    .todo-all {
+      display: flex;
+      width: 500px;
+      flex-direction: column;
+      margin-left: 50px;
+    }
+
+    .todo-label {
+      font-size: 35px;
+      color: aliceblue;
+      margin: 0;
+    }
+
+    #todoList {
+      font-size: 24px;
+      overflow: scroll;
+      width: 700px;
+      height: 600px;
     }
   </style>
 </head>
 
 <body>
-  <div style="width: 700px; margin: 200px auto;">
-    <div>
-      <input type="time" id="startTime">
-      <input type="hidden" id="startTimestamp">
-      <input type="text" name="duration" id="duration" style="width: 180px">
+  <content>
+    <div class="timer-all">
+      <p class="timer-label">timer</p>
+      <div class="timer-input">
+        <input type="time" id="startTime">
+        <input type="hidden" id="startTimestamp">
+        <input type="text" name="duration" id="duration">
+      </div>
+      <div class="timer-button">
+        <input type="button" id="startButton" value="start" onclick="start()">
+      </div>
     </div>
-    <div>
-      <input type="button" value="start" onclick="start()">
+    <div class="todo-all">
+      <p class="todo-label">todo （□√×☆＠）</p>
+      <textarea name="" id="todoList" wrap="soft" onkeyup="onTodoListChange()"></textarea>
     </div>
-  </div>
+  </content>
 </body>
 
 <script src="one-timer.js"></script>
